@@ -3500,7 +3500,7 @@ return Promise$1;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("7c73c1b8cc27f7236c98")
+/******/ 		__webpack_require__.h = () => ("27e5c770026f2683a182")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -3804,7 +3804,11 @@ return Promise$1;
 /******/ 				.then(__webpack_require__.hmrM)
 /******/ 				.then(function (update) {
 /******/ 					if (!update) {
-/******/ 						return setStatus(applyInvalidatedModules() ? "ready" : "idle");
+/******/ 						return setStatus(applyInvalidatedModules() ? "ready" : "idle").then(
+/******/ 							function () {
+/******/ 								return null;
+/******/ 							}
+/******/ 						);
 /******/ 					}
 /******/ 		
 /******/ 					return setStatus("prepare").then(function () {
