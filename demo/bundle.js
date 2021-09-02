@@ -174,10 +174,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function c(t, n) {
-    return !n || "object" != _typeof(n) && "function" != typeof n ? function (t) {
+    if (n && ("object" == _typeof(n) || "function" == typeof n)) return n;
+    if (void 0 !== n) throw new TypeError("Derived constructors may only return object or undefined");
+    return function (t) {
       if (void 0 === t) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
       return t;
-    }(t) : n;
+    }(t);
   }
 
   function f(t) {
@@ -330,7 +332,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return t.indexOf(n) > -1;
   }
 
-  var I = {
+  var T = {
     arr: function arr(t) {
       return Array.isArray(t);
     },
@@ -338,7 +340,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return E(Object.prototype.toString.call(t), "Object");
     },
     pth: function pth(t) {
-      return I.obj(t) && t.hasOwnProperty("totalLength");
+      return T.obj(t) && t.hasOwnProperty("totalLength");
     },
     svg: function svg(t) {
       return t instanceof SVGElement;
@@ -347,7 +349,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return t instanceof HTMLInputElement;
     },
     dom: function dom(t) {
-      return t.nodeType || I.svg(t);
+      return t.nodeType || T.svg(t);
     },
     str: function str(t) {
       return "string" == typeof t;
@@ -368,13 +370,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       return /^hsl/.test(t);
     },
     col: function col(t) {
-      return I.hex(t) || I.rgb(t) || I.hsl(t);
+      return T.hex(t) || T.rgb(t) || T.hsl(t);
     },
     key: function key(t) {
       return !k.hasOwnProperty(t) && !M.hasOwnProperty(t) && "targets" !== t && "keyframes" !== t;
     }
   },
-      R = {
+      I = {
     linear: function linear() {
       return function (t) {
         return t;
@@ -382,7 +384,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }
   };
 
-  function T(t, n) {
+  function R(t, n) {
     for (var e = t.length, o = arguments.length >= 2 ? arguments[1] : void 0, r = [], i = 0; i < e; i++) {
       if (i in t) {
         var a = t[i];
@@ -395,12 +397,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function L(t) {
     return t.reduce(function (t, n) {
-      return t.concat(I.arr(n) ? L(n) : n);
+      return t.concat(T.arr(n) ? L(n) : n);
     }, []);
   }
 
   function B(t) {
-    return I.arr(t) ? t : (I.str(t) && (t = function (t) {
+    return T.arr(t) ? t : (T.str(t) && (t = function (t) {
       try {
         return document.querySelectorAll(t);
       } catch (t) {
@@ -439,20 +441,20 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     var e = D(t);
 
     for (var o in n) {
-      e[o] = I.und(t[o]) ? n[o] : t[o];
+      e[o] = T.und(t[o]) ? n[o] : t[o];
     }
 
     return e;
   }
 
   function _(t) {
-    return I.rgb(t) ? (e = /rgb\((\d+,\s*[\d]+,\s*[\d]+)\)/g.exec(n = t)) ? "rgba(" + e[1] + ",1)" : n : I.hex(t) ? function (t) {
+    return T.rgb(t) ? (e = /rgb\((\d+,\s*[\d]+,\s*[\d]+)\)/g.exec(n = t)) ? "rgba(" + e[1] + ",1)" : n : T.hex(t) ? function (t) {
       var n = t.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, function (t, n, e, o) {
         return n + n + e + e + o + o;
       }),
           e = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(n);
       return "rgba(" + parseInt(e[1], 16) + "," + parseInt(e[2], 16) + "," + parseInt(e[3], 16) + ",1)";
-    }(t) : I.hsl(t) ? function (t) {
+    }(t) : T.hsl(t) ? function (t) {
       var n,
           e,
           o,
@@ -482,7 +484,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function X(t, n) {
-    return I.fnc(t) ? t(n.target, n.id, n.total) : t;
+    return T.fnc(t) ? t(n.target, n.id, n.total) : t;
   }
 
   function Y(t, n) {
@@ -492,7 +494,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function U(t, n, e) {
     if (A([e, "deg", "rad", "turn"], V(n))) return n;
     var o = j.CSS[n + e];
-    if (!I.und(o)) return o;
+    if (!T.und(o)) return o;
     var r = document.createElement(t.tagName),
         i = t.parentNode && t.parentNode !== document ? t.parentNode : document.body;
     i.appendChild(r), r.style.position = "absolute", r.style.width = 100 + e;
@@ -511,11 +513,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function N(t, n) {
-    return I.dom(t) && !I.inp(t) && (Y(t, n) || I.svg(t) && t[n]) ? "attribute" : I.dom(t) && A(S, n) ? "transform" : I.dom(t) && "transform" !== n && W(t, n) ? "css" : null != t[n] ? "object" : void 0;
+    return T.dom(t) && !T.inp(t) && (Y(t, n) || T.svg(t) && t[n]) ? "attribute" : T.dom(t) && A(S, n) ? "transform" : T.dom(t) && "transform" !== n && W(t, n) ? "css" : null != t[n] ? "object" : void 0;
   }
 
   function Z(t) {
-    if (I.dom(t)) {
+    if (T.dom(t)) {
       for (var n, e = t.style.transform || "", o = /(\w+)\(([^)]*)\)/g, r = new Map(); n = o.exec(e);) {
         r.set(n[1], n[2]);
       }
@@ -568,7 +570,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function q(t, n) {
-    if (I.col(t)) return _(t);
+    if (T.col(t)) return _(t);
     if (/\s/g.test(t)) return t;
     var e = V(t),
         o = e ? t.substr(0, t.length - e.length) : t;
@@ -577,17 +579,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
   function K(t, n) {
     var e = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/g,
-        o = q(I.pth(t) ? t.totalLength : t, n) + "";
+        o = q(T.pth(t) ? t.totalLength : t, n) + "";
     return {
       original: o,
       numbers: o.match(e) ? o.match(e).map(Number) : [0],
-      strings: I.str(t) || n ? o.split(e) : []
+      strings: T.str(t) || n ? o.split(e) : []
     };
   }
 
   function Q(t) {
     var n = function (t) {
-      return T(t ? L(I.arr(t) ? t.map(B) : B(t)) : [], function (t, n, e) {
+      return R(t ? L(T.arr(t) ? t.map(B) : B(t)) : [], function (t, n, e) {
         return e.indexOf(t) === n;
       });
     }(t);
@@ -607,15 +609,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function J(t, n) {
     var e = D(n);
 
-    if (I.arr(t)) {
+    if (T.arr(t)) {
       var o = t.length;
-      2 === o && !I.obj(t[0]) ? t = {
+      2 === o && !T.obj(t[0]) ? t = {
         value: t
-      } : I.fnc(n.duration) || (e.duration = n.duration / o);
+      } : T.fnc(n.duration) || (e.duration = n.duration / o);
     }
 
-    return (I.arr(t) ? t : [t]).map(function (t, n) {
-      return I.obj(t) && !I.pth(t) ? t : {
+    return (T.arr(t) ? t : [t]).map(function (t, n) {
+      return T.obj(t) && !T.pth(t) ? t : {
         value: t
       };
     }).map(function (t) {
@@ -631,7 +633,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         for (var o in t) {
           var r = X(t[o], n);
-          I.arr(r) && 1 === (r = r.map(function (t) {
+          T.arr(r) && 1 === (r = r.map(function (t) {
             return X(t, n);
           })).length && (r = r[0]), e[o] = r;
         }
@@ -639,15 +641,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         return e.duration = parseFloat(e.duration), e;
       }(o, n),
           i = r.value,
-          a = I.arr(i) ? i[1] : i,
+          a = T.arr(i) ? i[1] : i,
           s = V(a),
           p = H(n.target, t.name, s, n),
           l = e ? e.to.original : p,
-          u = I.arr(i) ? i[0] : l,
+          u = T.arr(i) ? i[0] : l,
           c = V(u) || V(p),
           f = s || c;
 
-      return I.und(a) && (a = l), r.from = K(u, f), r.to = K($(a, u), f), r.start = e ? e.end : 0, r.end = r.start + r.duration, r.isPath = !1, r.isColor = I.col(r.from.original), r.isColor && (r.round = 1), e = r, r;
+      return T.und(a) && (a = l), r.from = K(u, f), r.to = K($(a, u), f), r.start = e ? e.end : 0, r.end = r.start + r.duration, r.isPath = !1, r.isColor = T.col(r.from.original), r.isColor && (r.round = 1), e = r, r;
     });
   }
 
@@ -686,7 +688,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function ot(t, n) {
-    return T(L(t.map(function (t) {
+    return R(L(t.map(function (t) {
       return n.map(function (n) {
         return function (t, n) {
           var e = N(t.target, n.name);
@@ -705,7 +707,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }(t, n);
       });
     })), function (t) {
-      return !I.und(t);
+      return !T.und(t);
     });
   }
 
@@ -718,7 +720,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       var e = [];
 
       for (var o in n) {
-        I.key(o) && e.push({
+        T.key(o) && e.push({
           name: o,
           tweens: J(n[o], t)
         });
@@ -781,7 +783,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               s = r.tweens,
               p = s.length - 1,
               l = s[p];
-          p && (l = T(s, function (n) {
+          p && (l = R(s, function (n) {
             return t < n.end;
           })[0] || l);
 
@@ -875,7 +877,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   function ut(t, n) {
     var e = n || {},
         o = e.el || function (t) {
-      for (var n = t.parentNode; I.svg(n) && I.svg(n.parentNode);) {
+      for (var n = t.parentNode; T.svg(n) && T.svg(n.parentNode);) {
         n = n.parentNode;
       }
 
@@ -899,7 +901,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     };
   }
 
-  at.version = "3.1.0", at.get = H, at.set = et, at.convertPx = U, at.penner = R, at.path = function (t) {
+  at.version = "3.1.0", at.get = H, at.set = et, at.convertPx = U, at.penner = I, at.path = function (t) {
     return {
       el: t,
       svg: ut(t),
@@ -3500,7 +3502,7 @@ return Promise$1;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("8b801424b122eeb143bb")
+/******/ 		__webpack_require__.h = () => ("a0a4ccb8bb9c915ec0e5")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
