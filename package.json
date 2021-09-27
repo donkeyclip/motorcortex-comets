@@ -1,5 +1,5 @@
 {
-  "name": "@kissmybutton/motorcortex-comets",
+  "name": "@donkeyclip/motorcortex-comets",
   "version": "1.0.6",
   "description": "Comets fall plugin ",
   "main": "dist/motorcortex-comets.cjs.js",
@@ -26,21 +26,35 @@
     "start:demo": "webpack serve --mode=development --config ./demo/webpack.config.js",
     "build:demo": "webpack --mode=production --config ./demo/webpack.config.js",
     "test": "HERE GOES YOUR TEST TASK",
-    "test:prod": "npm run lint"
+    "test:prod": "npm run lint",
+    "prepare": "husky install"
   },
   "keywords": [
     "motorcortex"
   ],
+  "lint-staged": {
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.css": [
+      "prettier --write",
+      "stylelint  \"src/**.css\" --config .stylelintrc.json --fix"
+    ],
+    "*.{js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
   },
   "dependencies": {
-    "@kissmybutton/motorcortex-anime": "^2.1.16"
+    "@donkeyclip/motorcortex-anime": "^2.1.16"
   },
   "peerDependencies": {
-    "@kissmybutton/motorcortex": ">= 6.4.1 < 8"
+    "@donkeyclip/motorcortex": ">= 6.4.1 < 8"
   },
   "devDependencies": {
     "@babel/cli": "7.15.7",
@@ -48,12 +62,13 @@
     "@babel/plugin-syntax-jsx": "7.14.5",
     "@babel/plugin-transform-react-jsx": "7.14.9",
     "@babel/preset-env": "7.15.6",
-    "@kissmybutton/motorcortex": "7.3.0",
-    "@kissmybutton/motorcortex-player": "2.2.0",
+    "@donkeyclip/motorcortex": "7.4.0",
+    "@donkeyclip/motorcortex-player": "2.2.1",
     "@rollup/plugin-babel": "5.3.0",
     "@rollup/plugin-commonjs": "16.0.0",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "10.0.0",
+    "@size-limit/preset-big-lib": "5.0.4",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.2",
     "concurrently": "5.3.0",
@@ -69,6 +84,7 @@
     "eslint-plugin-promise": "4.3.1",
     "eslint-plugin-standard": "4.1.0",
     "exports-loader": "1.1.1",
+    "husky": "^7.0.0",
     "imports-loader": "1.2.0",
     "npx": "10.2.2",
     "prettier": "2.4.1",
@@ -76,13 +92,7 @@
     "rollup": "2.57.0",
     "rollup-plugin-terser": "7.0.2",
     "shelljs": "0.8.4",
-    "stylelint": "13.13.1",
-    "stylelint-config-prettier": "8.0.2",
-    "stylelint-config-recommended": "3.0.0",
-    "stylelint-config-recommended-scss": "4.3.0",
-    "stylelint-config-sass-guidelines": "7.1.0",
-    "stylelint-config-standard": "20.0.0",
-    "stylelint-scss": "3.21.0",
+    "size-limit": "5.0.4",
     "webpack": "5.54.0",
     "webpack-cli": "4.8.0",
     "webpack-dev-server": "3.11.2",

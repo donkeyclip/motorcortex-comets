@@ -1,5 +1,5 @@
-import { HTMLClip, loadPlugin, Combo } from "@kissmybutton/motorcortex";
-import AnimeDefinition from "@kissmybutton/motorcortex-anime";
+import { HTMLClip, loadPlugin, Combo } from "@donkeyclip/motorcortex";
+import AnimeDefinition from "@donkeyclip/motorcortex-anime";
 const Anime = loadPlugin(AnimeDefinition);
 import { spatial, timely } from "../helpers/randomizer";
 
