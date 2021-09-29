@@ -162,15 +162,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function l(t) {
-    return (l = Object.setPrototypeOf ? Object.getPrototypeOf : function (t) {
+    return l = Object.setPrototypeOf ? Object.getPrototypeOf : function (t) {
       return t.__proto__ || Object.getPrototypeOf(t);
-    })(t);
+    }, l(t);
   }
 
   function u(t, n) {
-    return (u = Object.setPrototypeOf || function (t, n) {
+    return u = Object.setPrototypeOf || function (t, n) {
       return t.__proto__ = n, t;
-    })(t, n);
+    }, u(t, n);
   }
 
   function c(t, n) {
@@ -270,15 +270,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }
 
   function x(t) {
-    return (x = Object.setPrototypeOf ? Object.getPrototypeOf : function (t) {
+    return x = Object.setPrototypeOf ? Object.getPrototypeOf : function (t) {
       return t.__proto__ || Object.getPrototypeOf(t);
-    })(t);
+    }, x(t);
   }
 
   function w(t, n) {
-    return (w = Object.setPrototypeOf || function (t, n) {
+    return w = Object.setPrototypeOf || function (t, n) {
       return t.__proto__ = n, t;
-    })(t, n);
+    }, w(t, n);
   }
 
   function O(t, n) {
@@ -935,75 +935,105 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       ft = {
     transform: ["translateX", "translateY", "translateZ", "rotate", "rotateX", "rotateY", "rotateZ", "scale", "scaleX", "scaleY", "scaleZ", "skewX", "skewY", "perspective"]
   };
-  var dt = ["cm", "mm", "in", "px", "pt", "pc", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax", "%"],
-      yt = ["deg", "rad", "grad", "turn"],
-      ht = "measurement",
-      mt = "color",
-      gt = {
+
+  var dt = function (t) {
+    b(e, t);
+    var n = P(e);
+
+    function e() {
+      return h(this, e), n.apply(this, arguments);
+    }
+
+    return g(e, [{
+      key: "onGetContext",
+      value: function value() {
+        var t = {};
+        if (Object.prototype.hasOwnProperty.call(ft, this.attributeKey)) for (var n = ft[this.attributeKey], e = 0; e < n.length; e++) {
+          Object.prototype.hasOwnProperty.call(this.targetValue, n[e]) && (t[n[e]] = [this.initialValue[n[e]], this.targetValue[n[e]]]);
+        } else t[this.attributeKey] = [this.initialValue, this.targetValue];
+        this.target = ct(y(y({
+          autoplay: !1,
+          duration: this.props.duration,
+          easing: "linear",
+          targets: this.element
+        }, (this.attrs || {}).attrs || {}), t));
+      }
+    }, {
+      key: "getScratchValue",
+      value: function value() {
+        if ("transform" !== this.attributeKey) return ct.get(this.element, this.attributeKey);
+
+        for (var t = {}, n = ft[this.attributeKey], e = function (t, n) {
+          var e = t.getComputedStyle(n).transform;
+          if ("" === e || "none" === e) return {};
+          var o,
+              r,
+              i,
+              a,
+              s,
+              p,
+              l,
+              u,
+              c = e.split("(")[1].split(")")[0].split(",");
+          return o = c, r = Math.atan2(o[1], o[0]), i = Math.pow(o[0], 2) + Math.pow(o[1], 2), a = Math.pow(o[2], 2) + Math.pow(o[3], 2), s = Math.sqrt(i), p = (o[0] * o[3] - o[2] * o[1]) / s, l = Math.atan2(o[0] * o[2] + o[1] * o[3], i), u = Math.atan2(o[1] * o[3] + o[0] * o[2], a), {
+            rotate: r / (Math.PI / 180) + "deg",
+            scaleX: s,
+            scaleY: p,
+            skewX: (1 === i ? l / (Math.PI / 180) : 0) + "deg",
+            skewY: (1 === a ? u / (Math.PI / 180) : 0) + "deg",
+            translateX: o[4] + "px",
+            translateY: o[5] + "px"
+          };
+        }(this.context.window, this.element), o = 0; o < n.length; o++) {
+          t[n[o]] = Object.prototype.hasOwnProperty.call(e, n[o]) ? e[n[o]] : ct.get(this.element, n[o]);
+        }
+
+        return t;
+      }
+    }, {
+      key: "onProgress",
+      value: function value(t) {
+        return this.target.seek(this.target.duration * t);
+      }
+    }]), e;
+  }(e.default.Effect),
+      yt = function (t) {
+    b(e, t);
+    var n = P(e);
+
+    function e() {
+      return h(this, e), n.apply(this, arguments);
+    }
+
+    return g(e, [{
+      key: "onGetContext",
+      value: function value() {
+        this.pixelsAccuracy = this.attrs.pixelsAccuracy || 4, this.calculatedPoints = [];
+        var t = this.context.getElements(this.targetValue.pathElement)[0];
+        this.path = ct.path(t), this.isPathTargetInsideSVG = this.element instanceof SVGElement;
+      }
+    }, {
+      key: "onProgress",
+      value: function value(t) {
+        var n,
+            e = Math.round(this.path.totalLength / this.pixelsAccuracy * t) * this.pixelsAccuracy;
+        if (null !== this.calculatedPoints[e] && void 0 !== this.calculatedPoints[e]) n = this.calculatedPoints[e];else {
+          var o = ct.getPathProgress(this.path, e / this.path.totalLength, this.isPathTargetInsideSVG);
+          n = "\n            translateX(".concat(o.x, "px)\n            translateY(").concat(o.y, "px)\n            rotate(").concat(o.angle, "deg)\n        "), this.calculatedPoints[e] = n;
+        }
+        this.element.style.transform = n;
+      }
+    }]), e;
+  }(e.default.Effect),
+      ht = ["cm", "mm", "in", "px", "pt", "pc", "em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax", "%"],
+      mt = ["deg", "rad", "grad", "turn"],
+      gt = "measurement",
+      vt = "color",
+      bt = {
     npm_name: "@donkeyclip/motorcortex-anime",
     version: "2.1.16",
     incidents: [{
-      exportable: function (t) {
-        b(e, t);
-        var n = P(e);
-
-        function e() {
-          return h(this, e), n.apply(this, arguments);
-        }
-
-        return g(e, [{
-          key: "onGetContext",
-          value: function value() {
-            var t = {};
-            if (Object.prototype.hasOwnProperty.call(ft, this.attributeKey)) for (var n = ft[this.attributeKey], e = 0; e < n.length; e++) {
-              Object.prototype.hasOwnProperty.call(this.targetValue, n[e]) && (t[n[e]] = [this.initialValue[n[e]], this.targetValue[n[e]]]);
-            } else t[this.attributeKey] = [this.initialValue, this.targetValue];
-            this.target = ct(y(y({
-              autoplay: !1,
-              duration: this.props.duration,
-              easing: "linear",
-              targets: this.element
-            }, (this.attrs || {}).attrs || {}), t));
-          }
-        }, {
-          key: "getScratchValue",
-          value: function value() {
-            if ("transform" !== this.attributeKey) return ct.get(this.element, this.attributeKey);
-
-            for (var t = {}, n = ft[this.attributeKey], e = function (t, n) {
-              var e = t.getComputedStyle(n).transform;
-              if ("" === e || "none" === e) return {};
-              var o,
-                  r,
-                  i,
-                  a,
-                  s,
-                  p,
-                  l,
-                  u,
-                  c = e.split("(")[1].split(")")[0].split(",");
-              return o = c, r = Math.atan2(o[1], o[0]), i = Math.pow(o[0], 2) + Math.pow(o[1], 2), a = Math.pow(o[2], 2) + Math.pow(o[3], 2), s = Math.sqrt(i), p = (o[0] * o[3] - o[2] * o[1]) / s, l = Math.atan2(o[0] * o[2] + o[1] * o[3], i), u = Math.atan2(o[1] * o[3] + o[0] * o[2], a), {
-                rotate: r / (Math.PI / 180) + "deg",
-                scaleX: s,
-                scaleY: p,
-                skewX: (1 === i ? l / (Math.PI / 180) : 0) + "deg",
-                skewY: (1 === a ? u / (Math.PI / 180) : 0) + "deg",
-                translateX: o[4] + "px",
-                translateY: o[5] + "px"
-              };
-            }(this.context.window, this.element), o = 0; o < n.length; o++) {
-              t[n[o]] = Object.prototype.hasOwnProperty.call(e, n[o]) ? e[n[o]] : ct.get(this.element, n[o]);
-            }
-
-            return t;
-          }
-        }, {
-          key: "onProgress",
-          value: function value(t) {
-            return this.target.seek(this.target.duration * t);
-          }
-        }]), e;
-      }(e.default.Effect),
+      exportable: dt,
       name: "Anime",
       attributesValidationRules: {
         animatedAttrs: {
@@ -1011,11 +1041,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           props: {
             background: {
               optional: !0,
-              type: mt
+              type: vt
             },
             backgroundColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             backgroundPosition: {
               optional: !0,
@@ -1035,53 +1065,53 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             borderBottomColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             borderBottomLeftRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderBottomRightRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderBottomWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             borderEndEndRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderEndStartRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderImageOutset: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             borderImageSlice: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             borderImageWidth: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             borderLeft: {
@@ -1090,17 +1120,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             borderLeftColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             borderLeftWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderRight: {
               optional: !0,
@@ -1108,22 +1138,22 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             borderRightColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             borderRightWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderStartEndRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderStartStartRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderTop: {
               optional: !0,
@@ -1131,32 +1161,32 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             borderTopColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             borderTopLeftRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderTopRightRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderTopWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             borderWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             bottom: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             boxShadow: {
               optional: !0,
@@ -1164,11 +1194,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             caretColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             color: {
               optional: !0,
-              type: mt
+              type: vt
             },
             columnCount: {
               optional: !0,
@@ -1178,8 +1208,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             columnGap: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             columnRule: {
               optional: !0,
@@ -1187,12 +1217,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             columnRuleColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             columnRuleWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             columns: {
               optional: !0,
@@ -1202,8 +1232,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             columnWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             flex: {
               optional: !0,
@@ -1213,8 +1243,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             flexBasis: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             flexGrow: {
               optional: !0,
@@ -1234,18 +1264,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             fontSize: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             fontSizeAdjust: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             fontStretch: {
               optional: !0,
-              type: ht,
+              type: gt,
               units: ["%"]
             },
             fontWeight: {
@@ -1254,85 +1284,85 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             gap: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             gridColumnGap: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             gridGap: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             gridRowGap: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             gridTemplateColumns: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             gridTemplateRows: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             height: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             inset: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             insetBlock: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             insetBlockEnd: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             insetBlockStart: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             insetInline: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             insetInlineEnd: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             insetInlineStart: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             left: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             letterSpacing: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             lineClamp: {
               optional: !0,
@@ -1342,8 +1372,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             lineHeight: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             margin: {
@@ -1352,28 +1382,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             marginBottom: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             marginLeft: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             marginRight: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             marginTop: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             maskBorder: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             maskPosition: {
@@ -1386,14 +1416,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             maxHeight: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             maxWidth: {
               optional: !0,
-              type: ht,
-              units: dt,
+              type: gt,
+              units: ht,
               min: 0
             },
             objectPosition: {
@@ -1402,8 +1432,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             offset: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             offsetAnchor: {
               optional: !0,
@@ -1411,8 +1441,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             offsetDistance: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             offsetPath: {
               optional: !0,
@@ -1424,8 +1454,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             offsetRotate: {
               optional: !0,
-              type: ht,
-              units: yt
+              type: gt,
+              units: mt
             },
             opacity: {
               optional: !0,
@@ -1444,72 +1474,72 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             outlineColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             outlineOffset: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             outlineRadius: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             outlineRadiusBottomleft: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             outlineRadiusBottomright: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             outlineRadiusTopleft: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             outlineRadiusTopright: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             outlineWidth: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             padding: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             paddingBottom: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             paddingLeft: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             paddingRight: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             paddingTop: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             perspective: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             perspectiveOrigin: {
               optional: !0,
@@ -1517,18 +1547,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             right: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             rotate: {
               optional: !0,
-              type: ht,
-              units: yt
+              type: gt,
+              units: mt
             },
             rowGap: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scale: {
               optional: !0,
@@ -1537,117 +1567,117 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             scrollbarColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             scrollMargin: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginBlock: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginBlockEnd: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginBlockStart: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginBottom: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginInline: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginInlineEnd: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginInlineStart: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginLeft: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginRight: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollMarginTop: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPadding: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingBlock: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingBlockEnd: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingBlockStart: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingBottom: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingInline: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingInlineEnd: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingInlineStart: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingLeft: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingRight: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollPaddingTop: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             scrollSnapCoordinate: {
               optional: !0,
@@ -1655,8 +1685,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             scrollSnapDestination: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             shapeImageThreshold: {
               optional: !0,
@@ -1664,8 +1694,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             shapeMargin: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             shapeOutside: {
               optional: !0,
@@ -1681,12 +1711,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             textDecorationColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             textDecorationThickness: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             textEmphasis: {
               optional: !0,
@@ -1694,16 +1724,16 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             textEmphasisColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             textFillColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             textIndent: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             textShadow: {
               optional: !0,
@@ -1715,55 +1745,55 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             textStrokeColor: {
               optional: !0,
-              type: mt
+              type: vt
             },
             textUnderlineOffset: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             top: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             transform: {
               optional: !0,
               type: "object",
               props: {
                 translateX: {
-                  type: ht,
-                  units: dt,
+                  type: gt,
+                  units: ht,
                   optional: !0
                 },
                 translateY: {
-                  type: ht,
-                  units: dt,
+                  type: gt,
+                  units: ht,
                   optional: !0
                 },
                 translateZ: {
-                  type: ht,
-                  units: dt,
+                  type: gt,
+                  units: ht,
                   optional: !0
                 },
                 rotate: {
-                  type: ht,
-                  units: yt,
+                  type: gt,
+                  units: mt,
                   optional: !0
                 },
                 rotateX: {
-                  type: ht,
-                  units: yt,
+                  type: gt,
+                  units: mt,
                   optional: !0
                 },
                 rotateY: {
-                  type: ht,
-                  units: yt,
+                  type: gt,
+                  units: mt,
                   optional: !0
                 },
                 rotateZ: {
-                  type: ht,
-                  units: yt,
+                  type: gt,
+                  units: mt,
                   optional: !0
                 },
                 scale: {
@@ -1787,18 +1817,18 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                   optional: !0
                 },
                 skewX: {
-                  type: ht,
-                  units: yt,
+                  type: gt,
+                  units: mt,
                   optional: !0
                 },
                 skewY: {
-                  type: ht,
-                  units: yt,
+                  type: gt,
+                  units: mt,
                   optional: !0
                 },
                 perspective: {
-                  type: ht,
-                  units: dt,
+                  type: gt,
+                  units: ht,
                   optional: !0
                 }
               }
@@ -1817,13 +1847,13 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             width: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             wordSpacing: {
               optional: !0,
-              type: ht,
-              units: dt
+              type: gt,
+              units: ht
             },
             zIndex: {
               optional: !0,
@@ -1832,7 +1862,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             },
             zoom: {
               optional: !0,
-              type: ht,
+              type: gt,
               units: ["%"],
               min: 0
             }
@@ -1847,53 +1877,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             type: "string"
           },
           width: {
-            type: ht,
-            units: dt
+            type: gt,
+            units: ht
           },
           wordSpacing: {
-            type: ht,
-            units: dt
+            type: gt,
+            units: ht
           },
           zIndex: {
             type: "number",
             integer: !0
           },
           zoom: {
-            type: ht,
+            type: gt,
             units: ["%"],
             min: 0
           }
         }
       }
     }, {
-      exportable: function (t) {
-        b(e, t);
-        var n = P(e);
-
-        function e() {
-          return h(this, e), n.apply(this, arguments);
-        }
-
-        return g(e, [{
-          key: "onGetContext",
-          value: function value() {
-            this.pixelsAccuracy = this.attrs.pixelsAccuracy || 4, this.calculatedPoints = [];
-            var t = this.context.getElements(this.targetValue.pathElement)[0];
-            this.path = ct.path(t), this.isPathTargetInsideSVG = this.element instanceof SVGElement;
-          }
-        }, {
-          key: "onProgress",
-          value: function value(t) {
-            var n,
-                e = Math.round(this.path.totalLength / this.pixelsAccuracy * t) * this.pixelsAccuracy;
-            if (null !== this.calculatedPoints[e] && void 0 !== this.calculatedPoints[e]) n = this.calculatedPoints[e];else {
-              var o = ct.getPathProgress(this.path, e / this.path.totalLength, this.isPathTargetInsideSVG);
-              n = "\n            translateX(".concat(o.x, "px)\n            translateY(").concat(o.y, "px)\n            rotate(").concat(o.angle, "deg)\n        "), this.calculatedPoints[e] = n;
-            }
-            this.element.style.transform = n;
-          }
-        }]), e;
-      }(e.default.Effect),
+      exportable: yt,
       name: "MotionPath",
       attributesValidationRules: {
         animatedAttrs: {
@@ -1914,7 +1917,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     compositeAttributes: ft
   };
 
-  function vt(t, n) {
+  function xt(t, n) {
     if (null === n) {
       n = [];
 
@@ -1954,14 +1957,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }(n);
   }
 
-  function bt(t) {
-    var n = vt({
+  function wt(t) {
+    var n = xt({
       numberOfElements: t.numberOfElements,
       from: (t.minDuration || .2) * t.duration,
       to: (t.maxDuration || .6) * t.duration,
       divisions: t.divisions || 4
     }, null);
-    n = vt({
+    n = xt({
       numberOfElements: t.numberOfElements,
       from: .3,
       to: 1,
@@ -1982,8 +1985,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return e.reference[1] = t.duration - e.reference[0], n;
   }
 
-  var xt = t.loadPlugin(gt),
-      wt = function (t) {
+  var Ot = t.loadPlugin(bt),
+      Pt = function (t) {
     p(e, t);
     var n = f(e);
 
@@ -1994,7 +1997,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     return a(e, [{
       key: "html",
       get: function get() {
-        this.comets = bt({
+        this.comets = wt({
           duration: this.attrs.duration / this.attrs.repeats,
           numberOfElements: this.attrs.items,
           minDuration: .1,
@@ -2010,7 +2013,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         var r = 61 * Math.PI / 180,
             i = this.attrs.height * Math.tan(r);
-        this.comets = vt({
+        this.comets = xt({
           from: 0,
           to: this.attrs.width + i,
           numberOfElements: this.attrs.items
@@ -2043,7 +2046,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function value() {
         for (var t = 0; t < this.comets.length; t++) {
           var n = -29 * Math.PI / 180,
-              e = new xt.Anime({
+              e = new Ot.Anime({
             animatedAttrs: {
               left: "-".concat(this.itemData[t].width, "px"),
               top: "".concat(Math.tan(n) * (-this.itemData[t].width - this.itemData[t].left) + this.itemData[t].top, "px")
@@ -2059,8 +2062,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       }
     }]), e;
   }(t.HTMLClip),
-      Ot = t.loadPlugin(gt),
-      Pt = function (n) {
+      kt = t.loadPlugin(bt),
+      Mt = function (n) {
     p(o, n);
     var e = f(o);
 
@@ -2077,7 +2080,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           for (var n = null, e = 0; e < t.dimensions.length; e++) {
             var o = t.dimensions[e],
                 r = t.divisions[e] || 4;
-            n = vt({
+            n = xt({
               from: o[0],
               to: o[1],
               numberOfElements: t.numberOfElements,
@@ -2118,7 +2121,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           };
         }
 
-        for (var e = bt({
+        for (var e = wt({
           duration: this.attrs.duration / this.attrs.repeats,
           divisions: 3,
           numberOfElements: this.attrs.items,
@@ -2127,7 +2130,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }), o = 0; o < this.attrs.items; o++) {
           var r = new t.Combo({
             incidents: [{
-              incidentClass: Ot.Anime,
+              incidentClass: kt.Anime,
               attrs: {
                 animatedAttrs: n(0, "opacity" === this.attrs.blinkType)
               },
@@ -2136,7 +2139,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
               },
               position: 0
             }, {
-              incidentClass: Ot.Anime,
+              incidentClass: kt.Anime,
               attrs: {
                 animatedAttrs: n(1, "opacity" === this.attrs.blinkType)
               },
@@ -2154,13 +2157,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       }
     }]), o;
-  }(t.HTMLClip);
-
-  return {
+  }(t.HTMLClip),
+      St = {
     npm_name: "@donkeyclip/motorcortex-comets",
-    version: "1.0.6",
+    version: "1.0.5",
     incidents: [{
-      exportable: wt,
+      exportable: Pt,
       name: "Comets",
       attributesValidationRules: function (t) {
         for (var n = 1; n < arguments.length; n++) {
@@ -2231,10 +2233,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         }
       })
     }, {
-      exportable: Pt,
+      exportable: Mt,
       name: "Stars"
     }]
   };
+
+  return St;
 });
 
 /***/ }),
@@ -3504,7 +3508,7 @@ return Promise$1;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("c167c3fd1985e00129bd")
+/******/ 		__webpack_require__.h = () => ("c60ddc3904fd24b178ce")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
