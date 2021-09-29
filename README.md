@@ -1,21 +1,21 @@
 # motorcortex-comets
 
 ## Demo
-[Check it out here](https://kissmybutton.github.io/motorcortex-comets/demo/index.html)
+[Check it out here](https://donkeyclip.github.io/motorcortex-comets/demo/index.html)
 
 ## Installation
 
 ```bash
-$ npm install --save @kissmybutton/motorcortex-comets
+$ npm install --save @donkeyclip/motorcortex-comets
 # OR
-$ yarn add @kissmybutton/motorcortex-comets
+$ yarn add @donkeyclip/motorcortex-comets
 ```
 
 ## Loading
 
 ```javascript
-const MotorCortex = require("@kissmybutton/motorcortex/");
-const cometsDefinition = require("@kissmybutton/motorcortex-comets");
+const MotorCortex = require("@donkeyclip/motorcortex/");
+const cometsDefinition = require("@donkeyclip/motorcortex-comets");
 const Plugin = MotorCortex.loadPlugin(BannersDefinition);
 ```
 
