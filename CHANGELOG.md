@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.5](https://www.github.com/donkeyclip/motorcortex-comets/compare/v1.0.4...v1.0.5) (2021-09-29)
+
+
+### Bug Fixes
+
+* update npm name ([062c6b4](https://www.github.com/donkeyclip/motorcortex-comets/commit/062c6b4e863161d1e66b5c696d349371a67e0605))
+
 ### 1.0.4 (2021-05-12)
 
 
