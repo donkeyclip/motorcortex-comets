@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.6](https://www.github.com/donkeyclip/motorcortex-comets/compare/v1.0.5...v1.0.6) (2021-09-29)
+
+
+### Bug Fixes
+
+* update deps ([4df9627](https://www.github.com/donkeyclip/motorcortex-comets/commit/4df9627f21e95e020126c372023c1c2bf59948fe))
+
 ### [1.0.5](https://www.github.com/donkeyclip/motorcortex-comets/compare/v1.0.4...v1.0.5) (2021-09-29)
 
 
