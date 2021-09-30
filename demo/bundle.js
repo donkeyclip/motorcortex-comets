@@ -2160,7 +2160,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   }(t.HTMLClip),
       St = {
     npm_name: "@donkeyclip/motorcortex-comets",
-    version: "1.0.5",
+    version: "1.0.6",
     incidents: [{
       exportable: Pt,
       name: "Comets",
@@ -3508,7 +3508,7 @@ return Promise$1;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("c60ddc3904fd24b178ce")
+/******/ 		__webpack_require__.h = () => ("bd663812fbda58f7a480")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
