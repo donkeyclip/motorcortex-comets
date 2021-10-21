@@ -1,6 +1,6 @@
 import { HTMLClip, loadPlugin } from "@donkeyclip/motorcortex";
 import Player from "@donkeyclip/motorcortex-player";
-import MyPluginDefinition from "../dist/motorcortex-comets.umd";
+import MyPluginDefinition from "../dist/motorcortex-comets.esm";
 const MyPlugin = loadPlugin(MyPluginDefinition);
 
 const clip = new HTMLClip({
