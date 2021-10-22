@@ -5,10 +5,10 @@
   "main": "dist/motorcortex-comets.cjs.js",
   "module": "dist/motorcortex-comets.esm.js",
   "browser": "dist/motorcortex-comets.umd.js",
-  "author": "",
+  "author": "Donkeyclip (donkeyclip.com) <opensource@donkeyclip.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kissmybutton/motorcortex-comets"
+    "url": "https://github.com/donkeyclip/motorcortex-comets"
   },
   "license": "MIT",
   "engines": {
