@@ -1,6 +1,4 @@
-import { HTMLClip, loadPlugin } from "@donkeyclip/motorcortex";
-import AnimeDefinition from "@donkeyclip/motorcortex-anime";
-const Anime = loadPlugin(AnimeDefinition);
+import { HTMLClip, CSSEffect } from "@donkeyclip/motorcortex";
 import { _addDimension, timely } from "../helpers/randomizer";
 const closeAngle = 29;
 
@@ -112,7 +110,7 @@ export default class Comets extends HTMLClip {
     for (let i = 0; i < this.comets.length; i++) {
       // console.log(Math.tan(angle)*(-this.itemData[i].width -this.itemData[i].left)+ this.itemData[i].top)
       const angle = (-closeAngle * Math.PI) / 180;
-      const moveMagentComet = new Anime.Anime(
+      const moveMagentComet = new CSSEffect(
         {
           animatedAttrs: {
             left: `-${this.itemData[i].width}px`,
