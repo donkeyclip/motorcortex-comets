@@ -1,6 +1,4 @@
-import { HTMLClip, loadPlugin, Combo } from "@donkeyclip/motorcortex";
-import AnimeDefinition from "@donkeyclip/motorcortex-anime";
-const Anime = loadPlugin(AnimeDefinition);
+import { HTMLClip, CSSEffect, Combo } from "@donkeyclip/motorcortex";
 import { spatial, timely } from "../helpers/randomizer";
 
 export default class Stars extends HTMLClip {
@@ -103,7 +101,7 @@ export default class Stars extends HTMLClip {
         {
           incidents: [
             {
-              incidentClass: Anime.Anime,
+              incidentClass: CSSEffect,
               attrs: {
                 animatedAttrs: _getAnimatedAttr(
                   0,
@@ -116,7 +114,7 @@ export default class Stars extends HTMLClip {
               position: 0,
             },
             {
-              incidentClass: Anime.Anime,
+              incidentClass: CSSEffect,
               attrs: {
                 animatedAttrs: _getAnimatedAttr(
                   1,
