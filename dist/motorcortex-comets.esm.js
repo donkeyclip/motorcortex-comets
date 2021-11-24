@@ -1658,7 +1658,7 @@ var cometValidationRules = {
 };
 
 var name = "@donkeyclip/motorcortex-comets";
-var version = "1.0.6";
+var version = "1.1.0";
 
 var index = {
   npm_name: name,
