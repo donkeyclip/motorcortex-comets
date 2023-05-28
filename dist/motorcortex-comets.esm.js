@@ -147,7 +147,7 @@ var check = function (it) {
 };
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global$a =
+var global$b =
 // eslint-disable-next-line es/no-global-this -- safe
 check(typeof globalThis == 'object' && globalThis) || check(typeof window == 'object' && window) ||
 // eslint-disable-next-line no-restricted-globals -- safe
@@ -155,7 +155,7 @@ check(typeof self == 'object' && self) || check(typeof commonjsGlobal == 'object
 // eslint-disable-next-line no-new-func -- fallback
 function () {
   return this;
-}() || Function('return this')();
+}() || commonjsGlobal || Function('return this')();
 
 var objectGetOwnPropertyDescriptor = {};
 
@@ -305,13 +305,13 @@ var isObject$7 = $documentAll.IS_HTMLDDA ? function (it) {
   return typeof it == 'object' ? it !== null : isCallable$b(it);
 };
 
-var global$9 = global$a;
+var global$a = global$b;
 var isCallable$a = isCallable$c;
 var aFunction = function (argument) {
   return isCallable$a(argument) ? argument : undefined;
 };
 var getBuiltIn$3 = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(global$9[namespace]) : global$9[namespace] && global$9[namespace][method];
+  return arguments.length < 2 ? aFunction(global$a[namespace]) : global$a[namespace] && global$a[namespace][method];
 };
 
 var uncurryThis$7 = functionUncurryThis;
@@ -319,10 +319,10 @@ var objectIsPrototypeOf = uncurryThis$7({}.isPrototypeOf);
 
 var engineUserAgent = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
 
-var global$8 = global$a;
+var global$9 = global$b;
 var userAgent = engineUserAgent;
-var process = global$8.process;
-var Deno = global$8.Deno;
+var process = global$9.process;
+var Deno = global$9.Deno;
 var versions = process && process.versions || Deno && Deno.version;
 var v8 = versions && versions.v8;
 var match, version$1;
@@ -347,13 +347,17 @@ var engineV8Version = version$1;
 /* eslint-disable es/no-symbol -- required for testing */
 var V8_VERSION$2 = engineV8Version;
 var fails$7 = fails$b;
+var global$8 = global$b;
+var $String$3 = global$8.String;
 
 // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
 var symbolConstructorDetection = !!Object.getOwnPropertySymbols && !fails$7(function () {
   var symbol = Symbol();
   // Chrome 38 Symbol has incorrect toString conversion
   // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
-  return !String(symbol) || !(Object(symbol) instanceof Symbol) ||
+  // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
+  // of course, fail.
+  return !$String$3(symbol) || !(Object(symbol) instanceof Symbol) ||
   // Chrome 38-40 symbols are not inherited from DOM collections prototypes to instances
   !Symbol.sham && V8_VERSION$2 && V8_VERSION$2 < 41;
 });
@@ -420,7 +424,7 @@ var ordinaryToPrimitive$1 = function (input, pref) {
 
 var shared$3 = {exports: {}};
 
-var global$7 = global$a;
+var global$7 = global$b;
 
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 var defineProperty$1 = Object.defineProperty;
@@ -437,7 +441,7 @@ var defineGlobalProperty$3 = function (key, value) {
   return value;
 };
 
-var global$6 = global$a;
+var global$6 = global$b;
 var defineGlobalProperty$2 = defineGlobalProperty$3;
 var SHARED = '__core-js_shared__';
 var store$3 = global$6[SHARED] || defineGlobalProperty$2(SHARED, {});
@@ -447,10 +451,10 @@ var store$2 = sharedStore;
 (shared$3.exports = function (key, value) {
   return store$2[key] || (store$2[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.29.1',
+  version: '3.30.2',
   mode: 'global',
   copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.29.1/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.30.2/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -482,7 +486,7 @@ var uid$2 = function (key) {
   return 'Symbol(' + (key === undefined ? '' : key) + ')_' + toString(++id + postfix, 36);
 };
 
-var global$5 = global$a;
+var global$5 = global$b;
 var shared$2 = shared$3.exports;
 var hasOwn$6 = hasOwnProperty_1;
 var uid$1 = uid$2;
@@ -533,7 +537,7 @@ var toPropertyKey$3 = function (argument) {
   return isSymbol(key) ? key : key + '';
 };
 
-var global$4 = global$a;
+var global$4 = global$b;
 var isObject$4 = isObject$7;
 var document$1 = global$4.document;
 // typeof document.createElement is 'object' in old IE
@@ -688,7 +692,7 @@ if (!isCallable$6(store$1.inspectSource)) {
 }
 var inspectSource$2 = store$1.inspectSource;
 
-var global$3 = global$a;
+var global$3 = global$b;
 var isCallable$5 = isCallable$c;
 var WeakMap$1 = global$3.WeakMap;
 var weakMapBasicDetection = isCallable$5(WeakMap$1) && /native code/.test(String(WeakMap$1));
@@ -703,7 +707,7 @@ var sharedKey$1 = function (key) {
 var hiddenKeys$3 = {};
 
 var NATIVE_WEAK_MAP = weakMapBasicDetection;
-var global$2 = global$a;
+var global$2 = global$b;
 var isObject$2 = isObject$7;
 var createNonEnumerableProperty$1 = createNonEnumerableProperty$2;
 var hasOwn$3 = hasOwnProperty_1;
@@ -1022,7 +1026,7 @@ var NATIVE = isForced$1.NATIVE = 'N';
 var POLYFILL = isForced$1.POLYFILL = 'P';
 var isForced_1 = isForced$1;
 
-var global$1 = global$a;
+var global$1 = global$b;
 var getOwnPropertyDescriptor = objectGetOwnPropertyDescriptor.f;
 var createNonEnumerableProperty = createNonEnumerableProperty$2;
 var defineBuiltIn = defineBuiltIn$1;
