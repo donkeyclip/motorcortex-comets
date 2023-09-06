@@ -145,7 +145,7 @@ function _toPropertyKey(arg) {
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 var check = function (it) {
-  return it && it.Math == Math && it;
+  return it && it.Math === Math && it;
 };
 
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
@@ -178,7 +178,7 @@ var descriptors = !fails$a(function () {
     get: function () {
       return 7;
     }
-  })[1] != 7;
+  })[1] !== 7;
 });
 
 var fails$9 = fails$b;
@@ -251,7 +251,7 @@ var indexedObject = fails$8(function () {
   // eslint-disable-next-line no-prototype-builtins -- safe
   return !$Object$3('z').propertyIsEnumerable(0);
 }) ? function (it) {
-  return classof$3(it) == 'String' ? split(it, '') : $Object$3(it);
+  return classof$3(it) === 'String' ? split(it, '') : $Object$3(it);
 } : $Object$3;
 
 // we can't use just `it == null` since of `document.all` special case
@@ -354,7 +354,7 @@ var $String$3 = global$8.String;
 
 // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
 var symbolConstructorDetection = !!Object.getOwnPropertySymbols && !fails$7(function () {
-  var symbol = Symbol();
+  var symbol = Symbol('symbol detection');
   // Chrome 38 Symbol has incorrect toString conversion
   // `get-own-property-symbols` polyfill symbols converted to object are not Symbol instances
   // nb: Do not call `String` directly to avoid this being optimized out to `symbol+''` which will,
@@ -453,10 +453,10 @@ var store$2 = sharedStore;
 (shared$3.exports = function (key, value) {
   return store$2[key] || (store$2[key] = value !== undefined ? value : {});
 })('versions', []).push({
-  version: '3.30.2',
+  version: '3.32.1',
   mode: 'global',
   copyright: '© 2014-2023 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.30.2/LICENSE',
+  license: 'https://github.com/zloirock/core-js/blob/v3.32.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -559,7 +559,7 @@ var ie8DomDefine = !DESCRIPTORS$6 && !fails$6(function () {
     get: function () {
       return 7;
     }
-  }).a != 7;
+  }).a !== 7;
 });
 
 var DESCRIPTORS$5 = descriptors;
@@ -597,7 +597,7 @@ var v8PrototypeDefineBug = DESCRIPTORS$4 && fails$5(function () {
   return Object.defineProperty(function () {/* empty */}, 'prototype', {
     value: 42,
     writable: false
-  }).prototype != 42;
+  }).prototype !== 42;
 });
 
 var isObject$3 = isObject$7;
@@ -925,10 +925,10 @@ var createMethod = function (IS_INCLUDES) {
     var value;
     // Array#includes uses SameValueZero equality algorithm
     // eslint-disable-next-line no-self-compare -- NaN check
-    if (IS_INCLUDES && el != el) while (length > index) {
+    if (IS_INCLUDES && el !== el) while (length > index) {
       value = O[index++];
       // eslint-disable-next-line no-self-compare -- NaN check
-      if (value != value) return true;
+      if (value !== value) return true;
       // Array#indexOf ignores holes, Array#includes - not
     } else for (; length > index; index++) {
       if ((IS_INCLUDES || index in O) && O[index] === el) return IS_INCLUDES || index || 0;
@@ -1018,7 +1018,7 @@ var isCallable$2 = isCallable$c;
 var replacement = /#|\.prototype\./;
 var isForced$1 = function (feature, detection) {
   var value = data[normalize(feature)];
-  return value == POLYFILL ? true : value == NATIVE ? false : isCallable$2(detection) ? fails$3(detection) : !!detection;
+  return value === POLYFILL ? true : value === NATIVE ? false : isCallable$2(detection) ? fails$3(detection) : !!detection;
 };
 var normalize = isForced$1.normalize = function (string) {
   return String(string).replace(replacement, '.').toLowerCase();
@@ -1089,7 +1089,7 @@ var classof$2 = classofRaw$1;
 // https://tc39.es/ecma262/#sec-isarray
 // eslint-disable-next-line es/no-array-isarray -- safe
 var isArray$2 = Array.isArray || function isArray(argument) {
-  return classof$2(argument) == 'Array';
+  return classof$2(argument) === 'Array';
 };
 
 var $TypeError = TypeError;
@@ -1124,7 +1124,7 @@ var $Object = Object;
 // ES3 wrong here
 var CORRECT_ARGUMENTS = classofRaw(function () {
   return arguments;
-}()) == 'Arguments';
+}()) === 'Arguments';
 
 // fallback for IE11 Script Access Denied error
 var tryGet = function (it, key) {
@@ -1142,7 +1142,7 @@ var classof$1 = TO_STRING_TAG_SUPPORT ? classofRaw : function (it) {
   // builtinTag case
   : CORRECT_ARGUMENTS ? classofRaw(O)
   // ES3 arguments fallback
-  : (result = classofRaw(O)) == 'Object' && isCallable$1(O.callee) ? 'Arguments' : result;
+  : (result = classofRaw(O)) === 'Object' && isCallable$1(O.callee) ? 'Arguments' : result;
 };
 
 var uncurryThis = functionUncurryThis;
